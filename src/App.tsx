@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { Spin } from 'antd'
 import Login from './pages/Login'
 import Layout from './components/Layout'
 
@@ -58,12 +59,15 @@ import NotFound from './pages/NotFound'
 function RedirectHandler() {
   const navigate = useNavigate()
   const location = useLocation()
+  const [isRedirecting, setIsRedirecting] = useState(false)
 
   useEffect(() => {
     // 检查sessionStorage中是否有重定向信息
     const redirectData = sessionStorage.getItem('spa-redirect')
     
     if (redirectData) {
+      setIsRedirecting(true)
+      
       try {
         const { path, query, hash } = JSON.parse(redirectData)
         sessionStorage.removeItem('spa-redirect')
@@ -84,12 +88,34 @@ function RedirectHandler() {
           if (fullPath !== currentFullPath) {
             navigate(fullPath, { replace: true })
           }
+          setIsRedirecting(false)
         }, 100)
       } catch (e) {
         console.error('RedirectHandler error:', e)
+        setIsRedirecting(false)
       }
     }
   }, [navigate, location])
+
+  // 如果正在重定向，显示加载状态
+  if (isRedirecting) {
+    return (
+      <div style={{ 
+        position: 'fixed', 
+        top: 0, 
+        left: 0, 
+        right: 0, 
+        bottom: 0, 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        background: '#f5f5f5',
+        zIndex: 9999
+      }}>
+        <Spin size="large" tip="页面加载中..." />
+      </div>
+    )
+  }
 
   return null
 }
