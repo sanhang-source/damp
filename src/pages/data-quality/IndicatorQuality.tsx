@@ -12,6 +12,8 @@ interface IndicatorItem {
   expectedUpdateTime: string
   actualUpdateTime: string
   updateStatus: 'ontime' | 'delayed'
+  nullRate: number
+  fluctuationRate: number
   alertEnabled: boolean
   alertThreshold: number
   alertPhones: string
@@ -34,11 +36,11 @@ interface AlertItem {
 
 const IndicatorQuality = () => {
   const [data, setData] = useState<IndicatorItem[]>([
-    { id: '1', indicatorName: '企业信用评分均值', indicatorId: 'IND001', indicatorEnglishName: 'AVG_CREDIT_SCORE', dataSourceId: 'BM00001-068', relatedResourceId: 'RES001', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 07:45', updateStatus: 'ontime', alertEnabled: true, alertThreshold: 30, alertPhones: '13800138001' },
-    { id: '2', indicatorName: '行政处罚记录数', indicatorId: 'IND002', indicatorEnglishName: 'PENALTY_RECORD_COUNT', dataSourceId: 'BM00001-068', relatedResourceId: 'RES002', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 09:30', updateStatus: 'delayed', alertEnabled: true, alertThreshold: 30, alertPhones: '13800138002' },
-    { id: '3', indicatorName: '社保缴纳企业数', indicatorId: 'IND003', indicatorEnglishName: 'SOCIAL_SECURITY_COUNT', dataSourceId: 'BM00001-068', relatedResourceId: 'RES003', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 10:15', updateStatus: 'delayed', alertEnabled: true, alertThreshold: 30, alertPhones: '13800138003' },
-    { id: '4', indicatorName: '工商注册企业数', indicatorId: 'IND004', indicatorEnglishName: 'BUSINESS_REG_COUNT', dataSourceId: 'BM00001-068', relatedResourceId: 'RES004', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 07:58', updateStatus: 'ontime', alertEnabled: false, alertThreshold: 30, alertPhones: '' },
-    { id: '5', indicatorName: '纳税信用A级占比', indicatorId: 'IND005', indicatorEnglishName: 'TAX_CREDIT_A_RATIO', dataSourceId: 'BM00001-068', relatedResourceId: 'RES005', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 08:15', updateStatus: 'ontime', alertEnabled: true, alertThreshold: 30, alertPhones: '13800138005' },
+    { id: '1', indicatorName: '企业信用评分均值', indicatorId: 'IND001', indicatorEnglishName: 'AVG_CREDIT_SCORE', dataSourceId: 'BM00001-068', relatedResourceId: 'RES001', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 07:45', updateStatus: 'ontime', nullRate: 0.02, fluctuationRate: 5.5, alertEnabled: true, alertThreshold: 30, alertPhones: '13800138001' },
+    { id: '2', indicatorName: '行政处罚记录数', indicatorId: 'IND002', indicatorEnglishName: 'PENALTY_RECORD_COUNT', dataSourceId: 'BM00001-068', relatedResourceId: 'RES002', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 09:30', updateStatus: 'delayed', nullRate: 0.15, fluctuationRate: 42.8, alertEnabled: true, alertThreshold: 30, alertPhones: '13800138002' },
+    { id: '3', indicatorName: '社保缴纳企业数', indicatorId: 'IND003', indicatorEnglishName: 'SOCIAL_SECURITY_COUNT', dataSourceId: 'BM00001-068', relatedResourceId: 'RES003', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 10:15', updateStatus: 'delayed', nullRate: 0.08, fluctuationRate: 12.3, alertEnabled: true, alertThreshold: 30, alertPhones: '13800138003' },
+    { id: '4', indicatorName: '工商注册企业数', indicatorId: 'IND004', indicatorEnglishName: 'BUSINESS_REG_COUNT', dataSourceId: 'BM00001-068', relatedResourceId: 'RES004', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 07:58', updateStatus: 'ontime', nullRate: 0.01, fluctuationRate: 3.2, alertEnabled: false, alertThreshold: 30, alertPhones: '' },
+    { id: '5', indicatorName: '纳税信用A级占比', indicatorId: 'IND005', indicatorEnglishName: 'TAX_CREDIT_A_RATIO', dataSourceId: 'BM00001-068', relatedResourceId: 'RES005', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 08:15', updateStatus: 'ontime', nullRate: 0.05, fluctuationRate: 8.7, alertEnabled: true, alertThreshold: 30, alertPhones: '13800138005' },
   ])
 
   const [isConfigModalVisible, setIsConfigModalVisible] = useState(false)
@@ -92,6 +94,27 @@ const IndicatorQuality = () => {
           {status === 'ontime' ? '准时' : '延迟'}
         </Tag>
       )
+    },
+    {
+      title: '空值率',
+      dataIndex: 'nullRate',
+      width: 100,
+      align: 'center' as const,
+      render: (rate: number) => {
+        const percent = (rate * 100).toFixed(2)
+        const color = rate > 0.1 ? 'error' : rate > 0.05 ? 'warning' : 'success'
+        return <Tag color={color}>{percent}%</Tag>
+      }
+    },
+    {
+      title: '数据波动率',
+      dataIndex: 'fluctuationRate',
+      width: 110,
+      align: 'center' as const,
+      render: (rate: number) => {
+        const color = rate > 30 ? 'error' : rate > 15 ? 'warning' : 'success'
+        return <Tag color={color}>{rate.toFixed(1)}%</Tag>
+      }
     },
     {
       title: '预警状态',
@@ -314,7 +337,7 @@ const IndicatorQuality = () => {
           columns={columns}
           dataSource={filteredIndicatorData}
           rowKey="id"
-          scroll={{ x: 1160 }}
+          scroll={{ x: 1380 }}
           pagination={{
             showSizeChanger: true,
             showTotal: (total) => `共 ${total} 条`,
