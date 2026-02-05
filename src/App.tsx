@@ -79,6 +79,10 @@ function RedirectHandler() {
 function App() {
   // 获取基础路径（GitHub Pages子路径部署）
   const basename = import.meta.env.BASE_URL || '/'
+
+  return (
+    <BrowserRouter basename={basename}>
+      <RedirectHandler />
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
