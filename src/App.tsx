@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import Login from './pages/Login'
 import Layout from './components/Layout'
 
@@ -53,9 +54,31 @@ import TableUpdateMonitor from './pages/data-quality/TableUpdateMonitor'
 import IndicatorQuality from './pages/data-quality/IndicatorQuality'
 import NotFound from './pages/NotFound'
 
+// GitHub Pages 重定向处理组件
+function RedirectHandler() {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    // 检查sessionStorage中是否有重定向信息
+    const redirectData = sessionStorage.getItem('redirect')
+    if (redirectData) {
+      const { path, query, hash } = JSON.parse(redirectData)
+      sessionStorage.removeItem('redirect')
+      // 构建完整路径并导航
+      const fullPath = path + (query ? '?' + query : '') + (hash ? '#' + hash : '')
+      if (fullPath !== location.pathname) {
+        navigate(fullPath, { replace: true })
+      }
+    }
+  }, [navigate, location])
+
+  return null
+}
+
 function App() {
-  return (
-    <BrowserRouter>
+  // 获取基础路径（GitHub Pages子路径部署）
+  const basename = import.meta.env.BASE_URL || '/'
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />

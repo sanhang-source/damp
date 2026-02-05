@@ -1,116 +1,31 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html>
+  <head>
+    <meta charset="utf-8">
     <title>数据资产管理平台</title>
-    <link rel="icon" type="image/svg+xml" href="/data-asset-platform/vite.svg">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-                sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            text-align: center;
-        }
-        .container {
-            max-width: 600px;
-            padding: 40px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #1890ff;
-            margin-bottom: 20px;
-        }
-        p {
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #1890ff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>数据资产管理平台</h1>
-        <p>正在加载应用，请稍候...</p>
-        <div>
-            <span class="loading"></span>
-            <span>正在重定向到登录页面</span>
-        </div>
-    </div>
-    
-    <script>
-        // GitHub Pages SPA重定向 - 智能处理所有路由
-        (function() {
-            const currentPath = window.location.pathname;
-            const currentHash = window.location.hash;
-            const currentSearch = window.location.search;
-            
-            console.log('404页面重定向 - 当前路径:', currentPath);
-            
-            // 检测是否已经在index.html页面（避免无限重定向）
-            if (currentPath.includes('index.html')) {
-                console.log('已经在index.html页面，无需重定向');
-                return;
-            }
-            
-            // 构建基础路径 - 自动检测仓库名称
-            const pathParts = currentPath.split('/').filter(Boolean);
-            let basePath = '/';
-            
-            // 如果路径中包含仓库名称（data-asset-platform）
-            if (pathParts.length > 0 && pathParts[0] === 'data-asset-platform') {
-                basePath = '/data-asset-platform/';
-            } else if (pathParts.length === 0) {
-                // 根路径访问，使用仓库名称
-                basePath = '/data-asset-platform/';
-            } else {
-                // 其他情况，保持当前路径结构
-                basePath = currentPath.endsWith('/') ? currentPath : currentPath + '/';
-            }
-            
-            // 构建重定向URL
-            let redirectUrl = basePath + 'index.html';
-            
-            // 保留hash和search参数
-            if (currentHash) {
-                redirectUrl += currentHash;
-            }
-            if (currentSearch) {
-                redirectUrl += (redirectUrl.includes('?') ? '&' : '?') + currentSearch.substring(1);
-            }
-            
-            console.log('重定向到:', redirectUrl);
-            
-            // 延迟重定向，让用户看到加载信息
-            setTimeout(() => {
-                window.location.replace(redirectUrl);
-            }, 100);
-        })();
+    <script type="text/javascript">
+      // 单页应用GitHub Pages重定向脚本
+      // 将路径存储到sessionStorage，然后重定向到首页
+      var pathSegmentsToKeep = 1; // 保留1段路径（仓库名）
+
+      var l = window.location;
+      var repo = l.pathname.split('/')[1]; // 获取仓库名
+      var path = l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/');
+      var query = l.search.slice(1);
+      var hash = l.hash.slice(1);
+      
+      // 保存原始URL到sessionStorage
+      sessionStorage.setItem('redirect', JSON.stringify({
+        path: '/' + path,
+        query: query,
+        hash: hash
+      }));
+      
+      // 重定向到首页
+      l.replace(l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + '/' + repo + '/');
     </script>
-</body>
+  </head>
+  <body>
+    正在重定向...
+  </body>
 </html>
