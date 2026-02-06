@@ -53,6 +53,7 @@ import AssetFieldManagement from './pages/data-asset/AssetFieldManagement'
 import InterfaceQuality from './pages/data-quality/InterfaceQuality'
 import TableUpdateMonitor from './pages/data-quality/TableUpdateMonitor'
 import IndicatorQuality from './pages/data-quality/IndicatorQuality'
+import AlertMessageCenter from './pages/data-quality/AlertMessageCenter'
 import NotFound from './pages/NotFound'
 
 // GitHub Pages 重定向处理组件
@@ -185,6 +186,7 @@ function App() {
             <Route path="interface" element={<InterfaceQuality />} />
             <Route path="table" element={<TableUpdateMonitor />} />
             <Route path="indicator" element={<IndicatorQuality />} />
+            <Route path="alerts" element={<AlertMessageCenter />} />
           </Route>
 
           {/* 系统管理模块 */}

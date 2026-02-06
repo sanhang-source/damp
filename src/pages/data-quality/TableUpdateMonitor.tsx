@@ -14,6 +14,7 @@ interface TableMonitorItem {
   expectedUpdateTime: string
   actualUpdateTime: string
   updateStatus: 'ontime' | 'delayed'
+  fluctuationRate: number
   alertEnabled: boolean
   alertThreshold: number
   alertPhones: string
@@ -36,11 +37,11 @@ interface AlertItem {
 
 const TableUpdateMonitor = () => {
   const [data, setData] = useState<TableMonitorItem[]>([
-    { id: '1', tableName: '企业信用评分表', tableId: 'T_CREDIT_SCORE', tableEnglishName: 'T_CREDIT_SCORE', dataSourceId: 'BM00001-068', relatedProductId: 'PRD001', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 07:45', updateStatus: 'ontime', alertEnabled: true, alertThreshold: 20, alertPhones: '13800138001' },
-    { id: '2', tableName: '行政处罚记录表', tableId: 'T_PENALTY_RECORD', tableEnglishName: 'T_PENALTY_RECORD', dataSourceId: 'BM00001-068', relatedProductId: 'PRD002', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 09:30', updateStatus: 'delayed', alertEnabled: true, alertThreshold: 20, alertPhones: '13800138002' },
-    { id: '3', tableName: '社保缴纳信息表', tableId: 'T_SOCIAL_SECURITY', tableEnglishName: 'T_SOCIAL_SECURITY', dataSourceId: 'BM00001-068', relatedProductId: 'PRD003', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 10:15', updateStatus: 'delayed', alertEnabled: true, alertThreshold: 20, alertPhones: '13800138003' },
-    { id: '4', tableName: '工商注册信息表', tableId: 'T_BUSINESS_REG', tableEnglishName: 'T_BUSINESS_REG', dataSourceId: 'BM00001-068', relatedProductId: 'PRD004', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 07:58', updateStatus: 'ontime', alertEnabled: false, alertThreshold: 20, alertPhones: '' },
-    { id: '5', tableName: '纳税信用等级表', tableId: 'T_TAX_CREDIT', tableEnglishName: 'T_TAX_CREDIT', dataSourceId: 'BM00001-068', relatedProductId: 'PRD005', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 08:15', updateStatus: 'ontime', alertEnabled: true, alertThreshold: 20, alertPhones: '13800138005' },
+    { id: '1', tableName: '企业信用评分表', tableId: 'T_CREDIT_SCORE', tableEnglishName: 'T_CREDIT_SCORE', dataSourceId: 'BM00001-068', relatedProductId: 'PRD001', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 07:45', updateStatus: 'ontime', fluctuationRate: 5.5, alertEnabled: true, alertThreshold: 20, alertPhones: '13800138001' },
+    { id: '2', tableName: '行政处罚记录表', tableId: 'T_PENALTY_RECORD', tableEnglishName: 'T_PENALTY_RECORD', dataSourceId: 'BM00001-068', relatedProductId: 'PRD002', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 09:30', updateStatus: 'delayed', fluctuationRate: 42.8, alertEnabled: true, alertThreshold: 20, alertPhones: '13800138002' },
+    { id: '3', tableName: '社保缴纳信息表', tableId: 'T_SOCIAL_SECURITY', tableEnglishName: 'T_SOCIAL_SECURITY', dataSourceId: 'BM00001-068', relatedProductId: 'PRD003', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 10:15', updateStatus: 'delayed', fluctuationRate: 12.3, alertEnabled: true, alertThreshold: 20, alertPhones: '13800138003' },
+    { id: '4', tableName: '工商注册信息表', tableId: 'T_BUSINESS_REG', tableEnglishName: 'T_BUSINESS_REG', dataSourceId: 'BM00001-068', relatedProductId: 'PRD004', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 07:58', updateStatus: 'ontime', fluctuationRate: 3.2, alertEnabled: false, alertThreshold: 20, alertPhones: '' },
+    { id: '5', tableName: '纳税信用等级表', tableId: 'T_TAX_CREDIT', tableEnglishName: 'T_TAX_CREDIT', dataSourceId: 'BM00001-068', relatedProductId: 'PRD005', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 08:15', updateStatus: 'ontime', fluctuationRate: 8.7, alertEnabled: true, alertThreshold: 20, alertPhones: '13800138005' },
   ])
 
   const [isConfigModalVisible, setIsConfigModalVisible] = useState(false)
@@ -114,6 +115,16 @@ const TableUpdateMonitor = () => {
         }
         const config = statusMap[status]
         return <Tag color={config.color}>{config.text}</Tag>
+      }
+    },
+    {
+      title: '数据波动率',
+      dataIndex: 'fluctuationRate',
+      width: 110,
+      align: 'center' as const,
+      render: (rate: number) => {
+        const color = rate > 30 ? 'error' : rate > 15 ? 'warning' : 'success'
+        return <Tag color={color}>{rate.toFixed(1)}%</Tag>
       }
     },
     {
@@ -317,7 +328,7 @@ const TableUpdateMonitor = () => {
           columns={columns}
           dataSource={filteredTableData}
           rowKey="id"
-          scroll={{ x: 1100 }}
+          scroll={{ x: 1220 }}
           pagination={{
             showSizeChanger: true,
             showTotal: (total) => `共 ${total} 条`,

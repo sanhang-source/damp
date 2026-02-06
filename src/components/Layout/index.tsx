@@ -18,7 +18,8 @@ import {
   GoldOutlined,
   MonitorOutlined,
   DatabaseOutlined,
-  DashboardOutlined
+  DashboardOutlined,
+  BellOutlined
 } from '@ant-design/icons'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import './style.css'
@@ -60,6 +61,7 @@ const pageTitleMap: Record<string, string> = {
   '/main/data-quality/interface': '接口质量监控',
   '/main/data-quality/table': '库表更新监控',
   '/main/data-quality/indicator': '数据指标质量监控',
+  '/main/data-quality/alerts': '告警消息中心',
   '/main/system/user': '用户管理',
   '/main/system/role': '角色管理',
   '/main/system/dict': '字典管理',
@@ -158,6 +160,11 @@ const Layout = () => {
 
     if (path.includes('data-quality')) {
       return [
+        {
+          key: '/main/data-quality/alerts',
+          icon: <BellOutlined />,
+          label: '告警消息中心',
+        },
         {
           key: '/main/data-quality/interface',
           icon: <MonitorOutlined />,
@@ -353,6 +360,9 @@ const Layout = () => {
     }
     if (path.includes('/data-quality/indicator')) {
       return '/main/data-quality/indicator'
+    }
+    if (path.includes('/data-quality/alerts')) {
+      return '/main/data-quality/alerts'
     }
 
     // 系统管理模块
