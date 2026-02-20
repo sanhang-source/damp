@@ -11,7 +11,12 @@
     "deploy:simple": "node scripts/deploy-simple.js",
     "build:gh-pages": "cross-env VITE_BASE_URL=/data-asset-platform/ vite build",
     "predeploy": "npm run build:gh-pages",
-    "deploy:gh-pages": "node scripts/deploy-gh-pages.js"
+    "deploy:gh-pages": "node scripts/deploy-gh-pages.js",
+    "analyze": "vite build --mode analyze",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\""
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.0",
@@ -26,11 +31,21 @@
     "@types/node": "^25.2.0",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react": "^4.2.0",
     "ali-oss": "^6.18.0",
     "cross-env": "^10.1.0",
     "dotenv": "^16.3.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
     "gh-pages": "^6.0.0",
+    "prettier": "^3.2.5",
+    "rollup-plugin-visualizer": "^5.12.0",
+    "terser": "^5.27.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.0"
   }

@@ -130,7 +130,7 @@ const FieldManagement = () => {
   }
 
   const onCancel = () => {
-    navigate('/main/data-resource/database')
+    navigate('/main/data-resource/database', { replace: true })
   }
 
   const filteredFields = fields.filter(field =>

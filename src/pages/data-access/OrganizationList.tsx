@@ -279,15 +279,15 @@ const OrganizationList = () => {
   }
 
   const handleAdd = () => {
-    navigate('/main/data-access/organization/add')
+    navigate('/main/data-access/organization/add', { replace: true })
   }
 
   const handleView = (record: Organization) => {
-    navigate(`/main/data-access/organization/detail/${record.id}`)
+    navigate(`/main/data-access/organization/detail/${record.id}`, { replace: true })
   }
 
   const handleEdit = (record: Organization) => {
-    navigate(`/main/data-access/organization/edit/${record.id}`)
+    navigate(`/main/data-access/organization/edit/${record.id}`, { replace: true })
   }
 
 

@@ -268,11 +268,11 @@ const ClassificationList = () => {
   ]
 
   const handleAdd = () => {
-    navigate('/main/data-classification/classification/add')
+    navigate('/main/data-classification/classification/add', { replace: true })
   }
 
   const handleEdit = (record: ClassificationItem) => {
-    navigate(`/main/data-classification/classification/edit/${record.id}`)
+    navigate(`/main/data-classification/classification/edit/${record.id}`, { replace: true })
   }
 
   const handleDelete = (_record: ClassificationItem) => {

@@ -320,13 +320,13 @@ const InterfaceList = () => {
       fixed: 'right' as const,
       render: (_: any, record: InterfaceItem) => (
         <Space>
-          <Button type="link" size="small" icon={<EyeOutlined />} onClick={() => navigate(`/main/data-resource/interface/detail/${record.id}`)}>
+          <Button type="link" size="small" icon={<EyeOutlined />} onClick={() => navigate(`/main/data-resource/interface/detail/${record.id}`, { replace: true })}>
             查看
           </Button>
-          <Button type="link" size="small" icon={<EditOutlined />} onClick={() => navigate(`/main/data-resource/interface/edit/${record.id}`)}>
+          <Button type="link" size="small" icon={<EditOutlined />} onClick={() => navigate(`/main/data-resource/interface/edit/${record.id}`, { replace: true })}>
             编辑
           </Button>
-          <Button type="link" size="small" icon={<DatabaseOutlined />} onClick={() => navigate(`/main/data-resource/interface/fields/${record.id}`)}>
+          <Button type="link" size="small" icon={<DatabaseOutlined />} onClick={() => navigate(`/main/data-resource/interface/fields/${record.id}`, { replace: true })}>
             字段管理
           </Button>
           <Button type="link" size="small" danger icon={<DeleteOutlined />} onClick={() => handleDelete(record)}>
@@ -375,7 +375,7 @@ const InterfaceList = () => {
   }
 
   const handleAdd = () => {
-    navigate('/main/data-resource/interface/add')
+    navigate('/main/data-resource/interface/add', { replace: true })
   }
 
   const handleImport = () => {

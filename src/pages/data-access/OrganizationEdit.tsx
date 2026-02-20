@@ -109,12 +109,12 @@ const OrganizationEdit = () => {
     setTimeout(() => {
       message.success('保存成功')
       setSaving(false)
-      navigate('/main/data-access/organization')
+      navigate('/main/data-access/organization', { replace: true })
     }, 1000)
   }
 
   const onCancel = () => {
-    navigate('/main/data-access/organization')
+    navigate('/main/data-access/organization', { replace: true })
   }
 
   return (

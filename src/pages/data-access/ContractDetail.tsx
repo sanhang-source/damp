@@ -128,8 +128,8 @@ const ContractDetail = () => {
     }, 500)
   }, [id])
 
-  const handleBack = () => navigate('/main/data-access/contract')
-  const handleEdit = () => navigate(`/main/data-access/contract/edit/${id}`)
+  const handleBack = () => navigate('/main/data-access/contract', { replace: true })
+  const handleEdit = () => navigate(`/main/data-access/contract/edit/${id}`, { replace: true })
 
   const handleExportDataResources = () => {
   }

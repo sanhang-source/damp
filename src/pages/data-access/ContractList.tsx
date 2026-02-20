@@ -293,15 +293,15 @@ const ContractList = () => {
   }
 
   const handleAdd = () => {
-    navigate('/main/data-access/contract/add')
+    navigate('/main/data-access/contract/add', { replace: true })
   }
 
   const handleView = (record: Contract) => {
-    navigate(`/main/data-access/contract/detail/${record.id}`)
+    navigate(`/main/data-access/contract/detail/${record.id}`, { replace: true })
   }
 
   const handleEdit = (record: Contract) => {
-    navigate(`/main/data-access/contract/edit/${record.id}`)
+    navigate(`/main/data-access/contract/edit/${record.id}`, { replace: true })
   }
 
 

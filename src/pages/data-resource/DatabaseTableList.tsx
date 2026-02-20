@@ -411,15 +411,15 @@ const DatabaseTableList = () => {
   }
 
   const handleAdd = () => {
-    navigate('/main/data-resource/database/add')
+    navigate('/main/data-resource/database/add', { replace: true })
   }
 
   const handleEdit = (record: DatabaseTable) => {
-    navigate(`/main/data-resource/database/edit/${record.id}`)
+    navigate(`/main/data-resource/database/edit/${record.id}`, { replace: true })
   }
 
   const handleFieldManage = (record: DatabaseTable) => {
-    navigate(`/main/data-resource/database/fields/${record.id}`)
+    navigate(`/main/data-resource/database/fields/${record.id}`, { replace: true })
   }
 
   const handleDelete = (_record: DatabaseTable) => {

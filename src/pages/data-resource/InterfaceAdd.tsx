@@ -38,12 +38,12 @@ const InterfaceAdd = () => {
     setTimeout(() => {
       message.success('新增成功')
       setLoading(false)
-      navigate('/main/data-resource/interface')
+      navigate('/main/data-resource/interface', { replace: true })
     }, 1000)
   }
 
   const onCancel = () => {
-    navigate('/main/data-resource/interface')
+    navigate('/main/data-resource/interface', { replace: true })
   }
 
   return (

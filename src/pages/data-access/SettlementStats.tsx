@@ -322,7 +322,7 @@ const SettlementStats = () => {
       <Card
         title={
           <Space>
-            <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/main/data-access/billing')}>
+            <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/main/data-access/billing', { replace: true })}>
               返回
             </Button>
             <Text strong style={{ fontSize: 16 }}>结算统计</Text>

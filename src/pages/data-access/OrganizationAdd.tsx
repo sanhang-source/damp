@@ -39,12 +39,12 @@ const OrganizationAdd = () => {
     setTimeout(() => {
       message.success('新增成功')
       setLoading(false)
-      navigate('/main/data-access/organization')
+      navigate('/main/data-access/organization', { replace: true })
     }, 1000)
   }
 
   const onCancel = () => {
-    navigate('/main/data-access/organization')
+    navigate('/main/data-access/organization', { replace: true })
   }
 
   const addressOptions = [

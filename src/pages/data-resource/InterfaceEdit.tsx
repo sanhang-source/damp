@@ -70,12 +70,12 @@ const InterfaceEdit = () => {
     setTimeout(() => {
       message.success('保存成功')
       setSaving(false)
-      navigate('/main/data-resource/interface')
+      navigate('/main/data-resource/interface', { replace: true })
     }, 1000)
   }
 
   const onCancel = () => {
-    navigate('/main/data-resource/interface')
+    navigate('/main/data-resource/interface', { replace: true })
   }
 
   return (

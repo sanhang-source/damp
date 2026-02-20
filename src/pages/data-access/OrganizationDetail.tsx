@@ -65,11 +65,11 @@ const OrganizationDetail = () => {
   }, [id])
 
   const handleBack = () => {
-    navigate('/main/data-access/organization')
+    navigate('/main/data-access/organization', { replace: true })
   }
 
   const handleEdit = () => {
-    navigate(`/main/data-access/organization/edit/${id}`)
+    navigate(`/main/data-access/organization/edit/${id}`, { replace: true })
   }
 
   // 导出合同信息

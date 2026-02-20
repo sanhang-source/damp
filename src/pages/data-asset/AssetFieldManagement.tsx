@@ -136,7 +136,7 @@ const AssetFieldManagement = () => {
   }
 
   const onCancel = () => {
-    navigate('/main/data-asset/catalog')
+    navigate('/main/data-asset/catalog', { replace: true })
   }
 
   const filteredFields = fields.filter(field =>

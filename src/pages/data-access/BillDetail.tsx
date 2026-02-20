@@ -29,7 +29,7 @@ const BillDetail = () => {
     }, 500)
   }, [id])
 
-  const handleBack = () => navigate('/main/data-access/bill')
+  const handleBack = () => navigate('/main/data-access/bill', { replace: true })
 
   const handleConfirm = () => {
     message.success('确认对账成功')

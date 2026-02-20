@@ -50,7 +50,7 @@ const InterfaceDetail = () => {
         <Card
           title={
             <Space>
-              <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/main/data-resource/interface')}>
+              <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/main/data-resource/interface', { replace: true })}>
                 返回
               </Button>
               <span>数据接口详情</span>
@@ -60,7 +60,7 @@ const InterfaceDetail = () => {
             <Button
               type="primary"
               icon={<EditOutlined />}
-              onClick={() => navigate(`/main/data-resource/interface/edit/${id}`)}
+              onClick={() => navigate(`/main/data-resource/interface/edit/${id}`, { replace: true })}
             >
               编辑
             </Button>

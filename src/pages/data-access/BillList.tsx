@@ -28,8 +28,8 @@ const BillList = () => {
       return <Tag color={colorMap[status] || 'default'}>{status}</Tag>
     }},
     { title: '对账人', dataIndex: 'reconciler', width: 100, align: 'center' as const },
-    { title: '操作', key: 'action', width: 120, align: 'center' as const, render: (_: any, record: any) => (
-      <Button type="link" size="small" icon={<EyeOutlined />} onClick={() => navigate(`/main/data-access/bill/detail/${record.id}`)}>
+    { title: '操作', key: 'action', width: 120, align: 'center' as const, fixed: 'right' as const, render: (_: any, record: any) => (
+      <Button type="link" size="small" icon={<EyeOutlined />} onClick={() => navigate(`/main/data-access/bill/detail/${record.id}`, { replace: true })}>
         账单明细
       </Button>
     )},

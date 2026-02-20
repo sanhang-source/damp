@@ -31,12 +31,12 @@ const ClassificationAdd = () => {
     setTimeout(() => {
       message.success('新增成功')
       setLoading(false)
-      navigate('/main/data-classification/classification')
+      navigate('/main/data-classification/classification', { replace: true })
     }, 1000)
   }
 
   const onCancel = () => {
-    navigate('/main/data-classification/classification')
+    navigate('/main/data-classification/classification', { replace: true })
   }
 
   return (

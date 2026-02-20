@@ -83,12 +83,12 @@ const ContractEdit = () => {
     setTimeout(() => {
       message.success('保存成功')
       setSaving(false)
-      navigate('/main/data-access/contract')
+      navigate('/main/data-access/contract', { replace: true })
     }, 1000)
   }
 
   const onCancel = () => {
-    navigate('/main/data-access/contract')
+    navigate('/main/data-access/contract', { replace: true })
   }
 
   return (

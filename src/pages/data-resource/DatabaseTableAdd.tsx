@@ -38,12 +38,12 @@ const DatabaseTableAdd = () => {
     setTimeout(() => {
       message.success('新增成功')
       setLoading(false)
-      navigate('/main/data-resource/database')
+      navigate('/main/data-resource/database', { replace: true })
     }, 1000)
   }
 
   const onCancel = () => {
-    navigate('/main/data-resource/database')
+    navigate('/main/data-resource/database', { replace: true })
   }
 
   return (

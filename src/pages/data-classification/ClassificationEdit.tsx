@@ -59,12 +59,12 @@ const ClassificationEdit = () => {
     setTimeout(() => {
       message.success('保存成功')
       setSaving(false)
-      navigate('/main/data-classification/classification')
+      navigate('/main/data-classification/classification', { replace: true })
     }, 1000)
   }
 
   const onCancel = () => {
-    navigate('/main/data-classification/classification')
+    navigate('/main/data-classification/classification', { replace: true })
   }
 
   return (

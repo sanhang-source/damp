@@ -190,7 +190,7 @@ const DictItemList = () => {
       <Card
         title={
           <Space>
-            <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/main/system/dict')}>返回</Button>
+            <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/main/system/dict', { replace: true })}>返回</Button>
             <span>字典项管理 - 处罚种类编码</span>
           </Space>
         }

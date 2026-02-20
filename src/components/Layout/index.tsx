@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Layout as AntLayout, Menu, Dropdown, Avatar } from 'antd'
+import { useState, useEffect, Suspense } from 'react'
+import { Layout as AntLayout, Menu, Dropdown, Avatar, Spin } from 'antd'
 import {
   DownOutlined,
   UserOutlined,
@@ -37,15 +37,15 @@ const pageTitleMap: Record<string, string> = {
   '/main/data-access/contract/edit': '编辑合同',
   '/main/data-access/contract/detail': '合同详情',
   '/main/data-access/billing': '数据接入计费管理',
-  '/main/data-access/settlement': '结算管理',
-  '/main/data-access/settlement-stats': '结算统计',
+  '/main/data-access/settlement': '数据接入计费管理',
+  '/main/data-access/settlement-stats': '数据接入计费管理',
   '/main/data-access/bill': '数据接入账单管理',
   '/main/data-access/bill/detail': '账单详情',
   '/main/data-resource/query': '数据资源查询',
   '/main/data-resource/database': '数据库表管理',
   '/main/data-resource/database/add': '新增数据库表',
   '/main/data-resource/database/edit': '编辑数据库表',
-  '/main/data-resource/database/fields': '字段管理',
+  '/main/data-resource/database/fields': '数据库表管理',
   '/main/data-resource/interface': '数据接口管理',
   '/main/data-resource/interface/add': '新增接口',
   '/main/data-resource/interface/edit': '编辑接口',
@@ -65,7 +65,7 @@ const pageTitleMap: Record<string, string> = {
   '/main/system/user': '用户管理',
   '/main/system/role': '角色管理',
   '/main/system/dict': '字典管理',
-  '/main/system/dict/items': '字典项管理',
+  '/main/system/dict/items': '字典管理',
 }
 
 interface TabItem {
@@ -379,9 +379,91 @@ const Layout = () => {
     return path
   }
 
+  // 判断路径是否是临时页面（新增/编辑/详情/结算等）
+  const isTempPage = (path: string): boolean => {
+    const tempPatterns = [
+      /\/add$/,
+      /\/edit\/[^/]+$/,
+      /\/detail\/[^/]+$/,
+      /\/fields\/[^/]+$/,
+      /\/items\/[^/]+$/,
+      /\/settlement$/,
+      /\/settlement-stats$/,
+    ]
+    return tempPatterns.some(pattern => pattern.test(path))
+  }
+
+  // 获取路径的基础模块（用于判断是否是同一模块）
+  const getBaseModule = (path: string): string => {
+    // 获取路径的基础模块，用于判断两个页面是否属于同一模块
+    // 例如：/main/data-asset/add 和 /main/data-asset/catalog 都属于 /main/data-asset
+    // 例如：/main/data-resource/database/add 和 /main/data-resource/database 都属于 /main/data-resource/database
+    
+    // 分割路径
+    const parts = path.split('/').filter(Boolean)
+    // 移除开头的 'main'
+    if (parts[0] === 'main') {
+      parts.shift()
+    }
+    
+    if (parts.length === 0) return '/main'
+    
+    // 获取第一级模块名
+    const firstModule = parts[0] // e.g., 'data-asset', 'data-resource', 'data-access'
+    
+    // 对于 data-access 模块
+    if (firstModule === 'data-access' && parts.length >= 2) {
+      const secondModule = parts[1]
+      // billing、settlement、settlement-stats 都属于计费管理模块
+      if (secondModule === 'billing' || secondModule === 'settlement' || secondModule === 'settlement-stats') {
+        return `/main/${firstModule}/billing`
+      }
+      // organization, contract, bill 各自独立
+      const dataAccessModules = ['organization', 'contract', 'bill']
+      if (dataAccessModules.includes(secondModule)) {
+        return `/main/${firstModule}/${secondModule}`
+      }
+    }
+    
+    // 对于 data-resource 模块，需要保留第二级（如 database, interface）
+    if (firstModule === 'data-resource' && parts.length >= 2) {
+      const secondModule = parts[1]
+      const dataResourceModules = ['database', 'interface', 'query', 'classification']
+      if (dataResourceModules.includes(secondModule)) {
+        return `/main/${firstModule}/${secondModule}`
+      }
+    }
+    
+    // 对于 data-asset 模块
+    if (firstModule === 'data-asset' && parts.length >= 2) {
+      const secondModule = parts[1]
+      // catalog, fields, add, edit 都属于数据资产目录模块
+      if (['catalog', 'fields', 'add', 'edit'].includes(secondModule)) {
+        return `/main/${firstModule}/catalog`
+      }
+      // lineage-map 独立
+      return `/main/${firstModule}/${secondModule}`
+    }
+    
+    // 对于 system 模块
+    if (firstModule === 'system' && parts.length >= 2) {
+      const secondModule = parts[1]
+      // dict 和 items 都属于字典管理模块
+      if (secondModule === 'dict') {
+        return `/main/${firstModule}/dict`
+      }
+      // user, role 各自独立
+      return `/main/${firstModule}/${secondModule}`
+    }
+    
+    // 其他模块，只保留第一级
+    return `/main/${firstModule}`
+  }
+
   // 监听路由变化，自动添加标签
   useEffect(() => {
     const currentPath = location.pathname
+    console.log('[Tab] Route:', currentPath)
 
     // 跳过 /main 路径，因为它会重定向到子页面
     if (currentPath === '/main') {
@@ -389,13 +471,59 @@ const Layout = () => {
     }
 
     const title = getPageTitle(currentPath)
+    const isTemp = isTempPage(currentPath)
+    const currentBase = getBaseModule(currentPath)
+    console.log('[Tab] isTemp:', isTemp, 'currentBase:', currentBase)
 
     setTabs(prevTabs => {
       const exists = prevTabs.some(tab => tab.key === currentPath)
-      if (!exists) {
-        return [...prevTabs, { key: currentPath, title, closable: true }]
+      if (exists) {
+        return prevTabs
       }
-      return prevTabs
+
+      // 如果是临时页面，替换当前激活的标签页而不是新建
+      if (isTemp) {
+        console.log('[Tab] Looking for list tab in:', prevTabs.map(t => ({key: t.key, base: getBaseModule(t.key)})))
+        // 查找是否有同一模块的列表页标签
+        const listTabIndex = prevTabs.findIndex(tab => {
+          const tabBase = getBaseModule(tab.key)
+          const isList = !isTempPage(tab.key)
+          const match = tabBase === currentBase && isList
+          console.log(`[Tab] Check ${tab.key}: base=${tabBase}, isList=${isList}, match=${match}`)
+          return match
+        })
+
+        console.log('[Tab] listTabIndex:', listTabIndex)
+        if (listTabIndex !== -1) {
+          // 替换列表页标签为当前临时页面
+          const newTabs = [...prevTabs]
+          newTabs[listTabIndex] = { key: currentPath, title, closable: true }
+          console.log('[Tab] Replaced!')
+          return newTabs
+        }
+      }
+
+      // 如果当前是列表页，检查是否需要从临时页恢复
+      if (!isTemp) {
+        const currentBase = getBaseModule(currentPath)
+        
+        // 查找是否有同一模块的临时页标签
+        const tempTabIndex = prevTabs.findIndex(tab => {
+          const tabBase = getBaseModule(tab.key)
+          return tabBase === currentBase && isTempPage(tab.key)
+        })
+
+        if (tempTabIndex !== -1) {
+          // 将临时页标签恢复为列表页
+          const newTabs = [...prevTabs]
+          newTabs[tempTabIndex] = { key: currentPath, title, closable: true }
+          return newTabs
+        }
+      }
+
+      // 创建新标签页
+      console.log('[Tab] Creating NEW tab')
+      return [...prevTabs, { key: currentPath, title, closable: true }]
     })
   }, [location.pathname])
 
@@ -499,7 +627,20 @@ const Layout = () => {
             ))}
           </div>
           <Content className="layout-content">
-            <Outlet />
+            <Suspense fallback={
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                height: '100%' 
+              }}>
+                <Spin size="large" tip="页面加载中...">
+                  <div style={{ padding: 50 }} />
+                </Spin>
+              </div>
+            }>
+              <Outlet />
+            </Suspense>
           </Content>
         </AntLayout>
       </AntLayout>

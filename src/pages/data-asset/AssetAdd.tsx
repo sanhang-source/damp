@@ -30,12 +30,12 @@ const AssetAdd = () => {
     setTimeout(() => {
       message.success('新增成功')
       setLoading(false)
-      navigate('/main/data-asset/catalog')
+      navigate('/main/data-asset/catalog', { replace: true })
     }, 1000)
   }
 
   const onCancel = () => {
-    navigate('/main/data-asset/catalog')
+    navigate('/main/data-asset/catalog', { replace: true })
   }
 
   return (
@@ -55,8 +55,8 @@ const AssetAdd = () => {
           <Form
             form={form}
             layout="horizontal"
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 20 }}
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 18 }}
             onFinish={onFinish}
             autoComplete="off"
           >
@@ -130,7 +130,7 @@ const AssetAdd = () => {
               </Col>
             </Row>
 
-            <Form.Item wrapperCol={{ offset: 2, span: 22 }} style={{ marginTop: 24 }}>
+            <Form.Item wrapperCol={{ offset: 3, span: 21 }} style={{ marginTop: 24 }}>
               <Space>
                 <Button type="primary" htmlType="submit" loading={loading} icon={<SaveOutlined />}>
                   保存

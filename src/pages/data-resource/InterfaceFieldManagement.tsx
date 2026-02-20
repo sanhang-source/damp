@@ -147,7 +147,7 @@ const InterfaceFieldManagement = () => {
         <Card
           title={
             <Space>
-              <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/main/data-resource/interface')}>
+              <Button icon={<ArrowLeftOutlined />} onClick={() => navigate('/main/data-resource/interface', { replace: true })}>
                 返回
               </Button>
               <span>字段管理</span>

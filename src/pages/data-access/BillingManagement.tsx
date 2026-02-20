@@ -224,11 +224,11 @@ const BillingManagement = () => {
   }
 
   const handleSettlement = (record: BillingRecord) => {
-    navigate('/main/data-access/settlement', { state: { orgName: record.orgName } })
+    navigate('/main/data-access/settlement', { replace: true, state: { orgName: record.orgName } })
   }
 
   const handleSettlementStats = (record: BillingRecord) => {
-    navigate('/main/data-access/settlement-stats', { state: { orgName: record.orgName } })
+    navigate('/main/data-access/settlement-stats', { replace: true, state: { orgName: record.orgName } })
   }
 
   return (

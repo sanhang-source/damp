@@ -41,12 +41,12 @@ const ContractAdd = () => {
     setTimeout(() => {
       message.success('新增成功')
       setLoading(false)
-      navigate('/main/data-access/contract')
+      navigate('/main/data-access/contract', { replace: true })
     }, 1000)
   }
 
   const onCancel = () => {
-    navigate('/main/data-access/contract')
+    navigate('/main/data-access/contract', { replace: true })
   }
 
   const orgOptions = [
