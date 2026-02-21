@@ -38,6 +38,7 @@ interface FieldItem {
 const InterfaceFieldManagement = () => {
   const navigate = useNavigate()
   const { id: _id } = useParams<{ id: string }>()
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 })
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isImportModalVisible, setIsImportModalVisible] = useState(false)
   const [editingField, setEditingField] = useState<FieldItem | null>(null)
@@ -188,11 +189,13 @@ const InterfaceFieldManagement = () => {
             rowKey="id"
             loading={loading}
             pagination={{
-              pageSize: 10,
-              showSizeChanger: true,
-              showQuickJumper: true,
-              showTotal: (total) => `共 ${total} 条`
-            }}
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          showTotal: (total) => `共 ${total} 条`,
+          onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize || 10 })
+        }}
           />
         </Card>
 

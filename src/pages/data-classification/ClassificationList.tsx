@@ -29,6 +29,7 @@ interface ClassificationItem {
 const ClassificationList = () => {
   const navigate = useNavigate()
   const [searchForm] = Form.useForm()
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 })
   const [expandSearch, setExpandSearch] = useState(false)
 
   const data: ClassificationItem[] = [
@@ -361,11 +362,13 @@ const ClassificationList = () => {
           rowKey="id" 
           scroll={{ x: 'max-content' }}
           pagination={{
+            current: pagination.current,
+            pageSize: pagination.pageSize,
             total: 25,
-            pageSize: 10,
             showSizeChanger: true,
             showTotal: (total) => `共 ${total} 条`,
-            pageSizeOptions: ['10', '50', '100', '500', '1000', '5000', '8000']
+            pageSizeOptions: ['10', '50', '100', '500', '1000', '5000', '8000'],
+            onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize || 10 })
           }}
         />
       </Card>

@@ -42,6 +42,7 @@ const IndicatorQuality = () => {
     { id: '4', indicatorName: '工商注册企业数', indicatorId: 'IND004', indicatorEnglishName: 'BUSINESS_REG_COUNT', dataSourceId: 'BM00001-068', relatedResourceId: 'RES004', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 07:58', updateStatus: 'ontime', nullRate: 0.01, fluctuationRate: 3.2, alertEnabled: false, alertThreshold: 30, alertPhones: '' },
     { id: '5', indicatorName: '纳税信用A级占比', indicatorId: 'IND005', indicatorEnglishName: 'TAX_CREDIT_A_RATIO', dataSourceId: 'BM00001-068', relatedResourceId: 'RES005', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 08:15', updateStatus: 'ontime', nullRate: 0.05, fluctuationRate: 8.7, alertEnabled: true, alertThreshold: 30, alertPhones: '13800138005' },
   ])
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 })
 
   const [isConfigModalVisible, setIsConfigModalVisible] = useState(false)
   const [currentIndicator, setCurrentIndicator] = useState<IndicatorItem | null>(null)
@@ -306,7 +307,14 @@ const IndicatorQuality = () => {
           rowKey="id"
           size="small"
           scroll={{ x: 1260 }}
-          pagination={{ pageSize: 5, showSizeChanger: true, showTotal: (total) => `共 ${total} 条`, pageSizeOptions: ['5', '10', '20', '50'] }}
+          pagination={{
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          showSizeChanger: true,
+          showTotal: (total) => `共 ${total} 条`,
+          pageSizeOptions: ['10', '50', '100', '500', '1000', '5000', '8000'],
+          onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize || 5 })
+        }}
           locale={{ emptyText: <Empty description="暂无告警信息" /> }}
         />
       </Card>

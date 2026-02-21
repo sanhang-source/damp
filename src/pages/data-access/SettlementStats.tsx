@@ -70,6 +70,7 @@ const SettlementStats = () => {
   }
 
   // 接口结算明细数据（与原型一致）
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 })
   const [detailData] = useState<ApiSettlementDetail[]>([
     {
       id: '1',
@@ -367,11 +368,13 @@ const SettlementStats = () => {
             loading={loading}
             scroll={{ x: 1500 }}
             pagination={{
-              pageSize: 10,
-              showSizeChanger: true,
-              showQuickJumper: true,
-              showTotal: (total) => `共 ${total} 条`
-            }}
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          showTotal: (total) => `共 ${total} 条`,
+          onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize || 10 })
+        }}
           />
         </div>
       </Card>

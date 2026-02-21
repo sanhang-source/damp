@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 const BillDetail = () => {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 })
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<any[]>([])
 
@@ -79,11 +80,13 @@ const BillDetail = () => {
           loading={loading}
           scroll={{ x: 1200 }}
           pagination={{
-            pageSize: 10,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: (total) => `共 ${total} 条`,
-          }}
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          showTotal: (total) => `共 ${total} 条`,
+          onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize || 10 })
+        }}
         />
       </Card>
     </div>

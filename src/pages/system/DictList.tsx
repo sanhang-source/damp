@@ -16,6 +16,7 @@ interface DictItem {
 
 const DictList = () => {
   const navigate = useNavigate()
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 })
   const [isAddModalVisible, setIsAddModalVisible] = useState(false)
   const [isEditModalVisible, setIsEditModalVisible] = useState(false)
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false)
@@ -189,8 +190,11 @@ const DictList = () => {
           rowKey="id"
           scroll={{ x: 1100 }}
           pagination={{
+            current: pagination.current,
+            pageSize: pagination.pageSize,
             showSizeChanger: true,
             showTotal: (total) => `共 ${total} 条`,
+            onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize || 10 })
           }}
         />
       </Card>

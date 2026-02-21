@@ -41,6 +41,7 @@ interface FlatLineageRecord {
 
 const AssetLineageMap = () => {
   // 数据状态
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 })
   const [loading, setLoading] = useState(true)
   const [flatData, setFlatData] = useState<FlatLineageRecord[]>([])
   
@@ -388,8 +389,11 @@ const AssetLineageMap = () => {
           rowKey="key"
           scroll={{ x: 1800 }}
           pagination={{
+            current: pagination.current,
+            pageSize: pagination.pageSize,
             showSizeChanger: true,
             showTotal: (total) => `共 ${total} 条`,
+            onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize || 10 })
           }}
         />
       </Card>

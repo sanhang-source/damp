@@ -15,6 +15,7 @@ interface RoleItem {
 }
 
 const RoleList = () => {
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 })
   const [isAddModalVisible, setIsAddModalVisible] = useState(false)
   const [isEditModalVisible, setIsEditModalVisible] = useState(false)
   const [isPermissionModalVisible, setIsPermissionModalVisible] = useState(false)
@@ -247,8 +248,11 @@ const RoleList = () => {
           rowKey="id"
           scroll={{ x: 1100 }}
           pagination={{
+            current: pagination.current,
+            pageSize: pagination.pageSize,
             showSizeChanger: true,
             showTotal: (total) => `共 ${total} 条`,
+            onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize || 10 })
           }}
         />
       </Card>

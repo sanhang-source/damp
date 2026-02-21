@@ -45,6 +45,7 @@ interface Contract {
 const ContractList = () => {
   const navigate = useNavigate()
   const [form] = Form.useForm()
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 })
   const [loading, setLoading] = useState(false)
   const [expandSearch, setExpandSearch] = useState(false)
   const [data, _setData] = useState<Contract[]>([
@@ -401,11 +402,13 @@ const ContractList = () => {
           loading={loading}
           scroll={{ x: 1400 }}
           pagination={{
+            current: pagination.current,
+            pageSize: pagination.pageSize,
             total: data.length,
-            pageSize: 10,
             showSizeChanger: true,
             showQuickJumper: true,
             showTotal: (total) => `共 ${total} 条`,
+            onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize || 10 })
           }}
         />
       </Card>

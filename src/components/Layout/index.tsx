@@ -59,7 +59,7 @@ const pageTitleMap: Record<string, string> = {
   '/main/data-asset/edit': '数据资产目录',
   '/main/data-asset/fields': '数据资产目录',
   '/main/data-quality/interface': '接口质量监控',
-  '/main/data-quality/table': '库表更新监控',
+  '/main/data-quality/table': '库表质量监控',
   '/main/data-quality/indicator': '数据指标质量监控',
   '/main/data-quality/alerts': '告警消息中心',
   '/main/system/user': '用户管理',
@@ -173,7 +173,7 @@ const Layout = () => {
         {
           key: '/main/data-quality/table',
           icon: <DatabaseOutlined />,
-          label: '库表更新监控',
+          label: '库表质量监控',
         },
         {
           key: '/main/data-quality/indicator',
@@ -283,7 +283,7 @@ const Layout = () => {
         navigate('/main/data-asset/catalog')
         break
       case 'quality':
-        navigate('/main/data-quality/interface')
+        navigate('/main/data-quality/alerts')
         break
       case 'system':
         navigate('/main/system/user')

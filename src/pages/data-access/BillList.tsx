@@ -12,6 +12,7 @@ const BillList = () => {
   const [form] = Form.useForm()
   const [loading] = useState(false)
   const [expandSearch, setExpandSearch] = useState(false)
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 })
 
   const columns = [
     { title: '序号', key: 'index', width: 60, align: 'center' as const, render: (_: any, __: any, index: number) => index + 1 },
@@ -158,11 +159,13 @@ const BillList = () => {
           loading={loading}
           scroll={{ x: 1200 }}
           pagination={{
-            pageSize: 10,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: (total) => `共 ${total} 条`,
-          }}
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          showTotal: (total) => `共 ${total} 条`,
+          onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize || 10 })
+        }}
         />
       </Card>
     </div>

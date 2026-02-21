@@ -53,6 +53,7 @@ interface DatabaseTable {
 const DatabaseTableList = () => {
   const navigate = useNavigate()
   const [form] = Form.useForm()
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 })
   const [loading, setLoading] = useState(false)
   const [expandSearch, setExpandSearch] = useState(false)
   const [importModalVisible, setImportModalVisible] = useState(false)
@@ -584,10 +585,12 @@ const DatabaseTableList = () => {
           loading={loading}
           scroll={{ x: 'max-content' }}
           pagination={{
-            pageSize: 10,
+            current: pagination.current,
+            pageSize: pagination.pageSize,
             showSizeChanger: true,
             showQuickJumper: true,
-            showTotal: (total) => `共 ${total} 条`
+            showTotal: (total) => `共 ${total} 条`,
+            onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize || 10 })
           }}
         />
       </Card>

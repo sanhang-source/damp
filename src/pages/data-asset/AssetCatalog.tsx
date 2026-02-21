@@ -32,6 +32,7 @@ const AssetCatalog = () => {
   const [lineageTypeFilter, setLineageTypeFilter] = useState<'all' | 'source' | 'service' | 'customer'>('all')
   const [lineageSearchKeyword, setLineageSearchKeyword] = useState('')
   const [, setLineageStats] = useState({ upstream: 0, service: 0, customer: 0 })
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 })
   const [currentAsset, setCurrentAsset] = useState<AssetItem | null>(null)
   const [searchForm] = Form.useForm()
   const [searchExpanded, setSearchExpanded] = useState(false)
@@ -328,11 +329,13 @@ const AssetCatalog = () => {
           rowKey="id"
           scroll={{ x: 'max-content' }}
           pagination={{
-            pageSize: 10,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: (total) => `共 ${total} 条`,
-          }}
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          showTotal: (total) => `共 ${total} 条`,
+          onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize || 10 })
+        }}
         />
       </Card>
 

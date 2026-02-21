@@ -43,6 +43,7 @@ const TableUpdateMonitor = () => {
     { id: '4', tableName: '工商注册信息表', tableId: 'T_BUSINESS_REG', tableEnglishName: 'T_BUSINESS_REG', dataSourceId: 'BM00001-068', relatedProductId: 'PRD004', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 07:58', updateStatus: 'ontime', fluctuationRate: 3.2, alertEnabled: false, alertThreshold: 20, alertPhones: '' },
     { id: '5', tableName: '纳税信用等级表', tableId: 'T_TAX_CREDIT', tableEnglishName: 'T_TAX_CREDIT', dataSourceId: 'BM00001-068', relatedProductId: 'PRD005', expectedUpdateTime: '2024-02-01 08:00', actualUpdateTime: '2024-02-01 08:15', updateStatus: 'ontime', fluctuationRate: 8.7, alertEnabled: true, alertThreshold: 20, alertPhones: '13800138005' },
   ])
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 })
 
   const [isConfigModalVisible, setIsConfigModalVisible] = useState(false)
   const [currentTable, setCurrentTable] = useState<TableMonitorItem | null>(null)
@@ -297,13 +298,20 @@ const TableUpdateMonitor = () => {
           rowKey="id"
           size="small"
           scroll={{ x: 1200 }}
-          pagination={{ pageSize: 5, showSizeChanger: true, showTotal: (total) => `共 ${total} 条`, pageSizeOptions: ['5', '10', '20', '50'] }}
+          pagination={{
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          showSizeChanger: true,
+          showTotal: (total) => `共 ${total} 条`,
+          pageSizeOptions: ['10', '50', '100', '500', '1000', '5000', '8000'],
+          onChange: (page, pageSize) => setPagination({ current: page, pageSize: pageSize || 5 })
+        }}
           locale={{ emptyText: <Empty description="暂无告警信息" /> }}
         />
       </Card>
 
       {/* 表监控列表 */}
-      <Card title="库表更新监控" style={{ marginBottom: 16 }}>
+      <Card title="库表质量监控" style={{ marginBottom: 16 }}>
         <Form form={tableSearchForm} style={{ marginBottom: 16 }}>
           <Row gutter={24}>
             {tableSearchFields.map((field, index) => (
